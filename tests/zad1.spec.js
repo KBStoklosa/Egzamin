@@ -21,9 +21,13 @@ test("purchasing product", async ({ page }) => {
   const mainPage = new MainPage(page);
   const productName = "Miecz Runiczny";
   const productId = "p1";
+  const heading = 'Strona główna';
 
   await mainPage.goto();
   await mainPage.verifyTitle();
+  await mainPage.verifyHeading();
+
+  await mainPage.clickProductById();
 
   await mainPage.clickProductById(productName);
 
