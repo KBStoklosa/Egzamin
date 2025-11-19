@@ -4,24 +4,45 @@ export class MainPage{
         this.page = page;
         this.url = '/';
         this.title = 'Testowy Sklep – Strona główna';
-        this.pageHeading = this.page.getByRole('heading', { name: 'Strona główna' });
+        this.product = page.getByTestId('product-title-4');
+        this.addButton = page.getByTestId('buy-btn-4');
+        this.toastAddToBasket = page.getByText ('Dodano do koszyka: Mysz Gamingowa'); 
+        this.cartButton = page.getByTestId('cart-button');
+        this.cartList = page.getByTestId('cart-list') .getByText("Mysz Gamingowa")
+        this.buyButton = page.getByTestId("cart-buy");
+        this.toastSukces = page.getByText("sukces"); 
     }
-    async goto() {
+    async navigateTo () {
         await this.page.goto(this.url);
-    }
-    async verifyTitle() {
-        await expect(this.page).toHaveTitle(this.title);
+        await expect (this.page).toHaveTitle(this.title);
     }
 
-    async verifyHeading() {
-        await expect(this.pageHeading).toBeVisible();
+    async checkIfProductIsVisible(expectedText){
+        await expect (this.product).toHaveText(expectedText);
+    } 
+    
+    async clickProduct(expectedText){
+        await this.product.click();
+    } 
+     async checkIdInUrl(expectedURL){
+        await expect (this.page).toHaveURL(expectedURL);
     }
 
-    async getProductTitleById(productId) {
-        return await this.page.getByTestId(`product-title-${productId}`).textContent();
+    async addToBasket(){
+        await this.addButton.click();
+        await expect (this.toastAddToBasket).toBeVisible(); 
+    }
+        async checkBasket(){
+        await this.cartButton.click();
+        await expect (this.cartList).toHaveText ('Mysz Gamingowa (p4)');   
     }
 
-    async clickProductById(productId) {
-        await this.page.getByTestId(`product-title-${productId}`).click();
+        async buyProduct(){
+        await this.buyButton.click();
+        await expect (this.toastSukces).toBeVisible(); 
     }
+
+    
 }
+
+module.exports = {MainPage}
